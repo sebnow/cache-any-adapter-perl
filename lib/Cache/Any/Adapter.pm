@@ -18,3 +18,5 @@ foreach my $method (qw(get_cache set remove)) {
 	};
 }
 
+1;
+
