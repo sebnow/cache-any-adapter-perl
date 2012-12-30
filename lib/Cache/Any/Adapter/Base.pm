@@ -16,7 +16,8 @@ sub init {
 
 sub delegate_method_to_slot {
 	my ($class, $slot, $method, $adapter_method) = @_;
-	*{"$class::$method"} = sub {
+	no strict 'refs';
+	*{"${class}::$method"} = sub {
 		my $self = shift;
 		return $self->{$slot}->$adapter_method(@_);
 	};
