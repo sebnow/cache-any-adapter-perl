@@ -4,7 +4,23 @@ use warnings;
 use File::Spec;
 use Module::Build;
 
-my $builder = Module::Build->new(
+my $class = Module::Build->subclass(
+	'class' => 'Module::Build::Custom',
+	'code' => <<'SUBCLASS');
+		sub ACTION_testauthor {
+			my $self = shift;
+
+			$self->depends_on(qw(build manifest distmeta));
+
+			$self->test_files(qw(xt));
+			$self->recursive_test_files(1);
+			$self->depends_on('test');
+
+			return;
+		}
+SUBCLASS
+
+my $builder = $class->new(
 	module_name => 'Cache::Any::Adapter',
 	license => 'mit',
 	configure_requires => {
